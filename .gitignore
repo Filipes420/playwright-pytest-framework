@@ -1,0 +1,20 @@
+# Python Virtual Environments
+venv/
+.venv/
+env/
+.env/
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# IDE files (PyCharm, VS Code)
+.idea/
+*.iml
+
+# Playwright artifacts
+test-results/
+playwright-report/
+
+# Logs and temporary files
+*.log
