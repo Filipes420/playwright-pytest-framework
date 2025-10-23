@@ -1,4 +1,5 @@
 import re
+import pytest
 from playwright.sync_api import Page, expect
 
 
@@ -12,6 +13,7 @@ def test_login_positive(page: Page) -> None:
     page.get_by_role("button", name="Login").click()
     page.get_by_role("link", name=" Logout").click()
 
+@pytest.mark.skip(reason="duplicate")
 def test_logout_positive(page: Page) -> None:
     page.goto("https://automationexercise.com/")
     page.get_by_role("link", name=" Signup / Login").click()

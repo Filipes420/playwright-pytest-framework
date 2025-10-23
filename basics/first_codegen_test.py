@@ -1,7 +1,9 @@
 import re
+
+import pytest
 from playwright.sync_api import Playwright, sync_playwright, expect
 
-
+@pytest.mark.skip
 def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
