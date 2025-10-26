@@ -3,8 +3,9 @@ import pytest
 from playwright.sync_api import Page, expect
 
 @pytest.mark.login
-def test_login_positive(page: Page) -> None:
-    page.goto("https://automationexercise.com/")
+def test_login_positive(setup) -> None:
+    page = setup
+
     page.get_by_role("link", name=" Signup / Login").click()
     page.locator("form").filter(has_text="Login").get_by_placeholder("Email Address").click()
     page.locator("form").filter(has_text="Login").get_by_placeholder("Email Address").fill("filip.gonda1@gmail.com")
@@ -14,8 +15,9 @@ def test_login_positive(page: Page) -> None:
     page.get_by_role("link", name=" Logout").click()
 
 
-def test_logout_positive(page: Page) -> None:
-    page.goto("https://automationexercise.com/")
+def test_logout_positive(setup) -> None:
+    page = setup
+
     page.get_by_role("link", name=" Signup / Login").click()
     page.locator("form").filter(has_text="Login").get_by_placeholder("Email Address").click()
     page.locator("form").filter(has_text="Login").get_by_placeholder("Email Address").fill("filip.gonda1@gmail.com")
