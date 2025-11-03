@@ -24,7 +24,6 @@ def setup():
     login_page.enter_password("Test123")
     login_page.click_login_button()
 
-    page.pause()
 
     yield page
     browser.close()
