@@ -8,7 +8,7 @@ class SignInRegisterPage:
         self.pw_input = self.page.get_by_test_id("login-password")
         self.login_button = self.page.get_by_test_id("login-button")
 
-    def verify_login_header(self):
+    def get_login_header(self):
         return self.login_header.inner_text()
 
     def enter_mail(self, email):

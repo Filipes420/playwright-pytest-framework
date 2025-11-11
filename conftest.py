@@ -18,7 +18,7 @@ def setup():
 
     login_page = SignInRegisterPage(page)
 
-    assert login_page.verify_login_header() == "Login to your account"
+    assert login_page.get_login_header() == "Login to your account"
 
     login_page.enter_mail("filip.gonda1@gmail.com")
     login_page.enter_password("Test123")
