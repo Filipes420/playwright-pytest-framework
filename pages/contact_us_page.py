@@ -1,7 +1,11 @@
 from playwright.sync_api import Page
+from pages.base_page import BasePage
 
-class ContactUsPage:
+
+class ContactUsPage(BasePage):
     def __init__(self, page: Page):
+        super().__init__(page)
+
         self.page = page
         self.get_in_touch = page.get_by_role("heading", name="Get In Touch")
         self.name_input = page.get_by_test_id("name")
@@ -27,14 +31,9 @@ class ContactUsPage:
     def enter_message(self, message):
         self.message_input.fill(message)
 
-    def upload_file(self, filepath):
-        with self.page.expect_file_chooser() as fc:
-            self.upload_file_button.click()
-            file_chooser = fc.value
-            file_chooser.set_files(filepath)
-
     def submit_form(self):
-        self.submit_button.click()
+        self.handle_dialog(trigger_action=lambda: self.submit_button.click(),
+                           expected_text="Press OK to proceed!")
 
 
 ## wrapper methods
@@ -46,6 +45,6 @@ class ContactUsPage:
 
         ## file upload is optional
         if filepath:
-            self.upload_file(filepath)
+            self.upload_file(trigger_action=lambda: self.upload_file_button.click(), filepath=filepath)
 
 
