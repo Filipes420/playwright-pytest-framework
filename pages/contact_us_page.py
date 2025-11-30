@@ -1,5 +1,6 @@
 from playwright.sync_api import Page
 from pages.base_page import BasePage
+from PIL import Image, ImageChops
 
 
 class ContactUsPage(BasePage):
@@ -31,9 +32,19 @@ class ContactUsPage(BasePage):
     def enter_message(self, message):
         self.message_input.fill(message)
 
-    def submit_form(self):
+    def submit_form(self, dialog_expected):
         self.handle_dialog(trigger_action=lambda: self.submit_button.click(),
-                           expected_text="Press OK to proceed!")
+                           expected_text="Press OK to proceed!", dialog_expected=dialog_expected)
+
+    def validate_tooltip(self):
+        self.page.screenshot(path="data/contact_us_form_email_required.png")
+
+        img1 = Image.open("data/contact_us_form_email_required.png")
+        img2 = Image.open("data/expected_contact_us_form_email_required.png")
+
+        diff = ImageChops.difference(img1, img2)
+
+        return not diff.getbbox()  # True ak sú identické
 
 
 ## wrapper methods
