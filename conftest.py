@@ -1,5 +1,6 @@
 import pytest
 from pages.main_page import MainPage
+from pages.cart_page import CartPage
 from pages.signin_register_page import SignInRegisterPage
 from playwright.sync_api import sync_playwright
 
@@ -29,3 +30,33 @@ def setup():
     browser.close()
     playwright.stop()
 
+@pytest.fixture(scope="function")
+def empty_cart():
+    playwright = sync_playwright().start()
+    browser = playwright.chromium.launch(headless=False)
+    page = browser.new_page()
+
+    playwright.selectors.set_test_id_attribute("data-qa")
+
+    main_page = MainPage(page)
+    cart_page = CartPage(page)
+
+    main_page.start()
+    main_page.click_login()
+
+    login_page = SignInRegisterPage(page)
+
+    assert login_page.get_login_header() == "Login to your account"
+
+    login_page.enter_mail("filip.gonda1@gmail.com")
+    login_page.enter_password("Test123")
+    login_page.click_login_button()
+
+    main_page.click_cart()
+
+    cart_page.delete_all_cart_products()
+    cart_page.click_home_button()
+
+    yield page
+    browser.close()
+    playwright.stop()

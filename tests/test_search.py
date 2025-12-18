@@ -17,12 +17,10 @@ def test_search_product(setup):
     assert base_page.get_title() == "Automation Exercise - All Products"
 
     product_data = get_random_product()
-    product_name = product_data[0]
-    product_price = product_data[1]
 
-    products_page.search_product(product_name)
+    products_page.search_product(product_data["name"])
     assert products_page.get_searched_products_header() == "SEARCHED PRODUCTS"
-    products_page.verify_searched_products(product_name, product_price)
+    products_page.verify_searched_products(product_data["name"], product_data["price"])
 
 def test_search_products(setup):
     base_page = BasePage(setup)

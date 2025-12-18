@@ -1,4 +1,4 @@
 import pytest
-@pytest.mark.skip
-def test_fixture(setup):
-    print("Fixtures")
+
+def test_fixture(empty_cart):
+   print("HIHI")

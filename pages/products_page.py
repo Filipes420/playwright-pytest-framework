@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from utils.text_utils import clean_text
 import csv
 
@@ -11,6 +11,10 @@ class ProductsPage():
         self.search_product_field = page.locator("#advertisement #search_product")
         self.search_button = page.locator("#advertisement #submit_search")
         self.searched_products_header = page.locator(".features_items > h2")
+        self.added_to_cart_modal_header = page.locator(".modal-content h4")
+        self.added_to_cart_modal_body = page.locator(".modal-content p").filter(has_text="Your product has been added to cart.")
+        self.added_to_cart_modal_view_cart = page.locator(".modal-content a")
+        self.added_to_cart_modal_continue_button = page.locator(".modal-content button")
 
     def get_products_header(self):
         return self.all_products_heading.inner_text()
@@ -71,6 +75,25 @@ class ProductsPage():
                 assert product_price == product.locator("h2").inner_text()
 
             assert product_name in product.locator("p").inner_text()
+
+    def add_to_cart(self):
+        product = self.products
+        product.locator("a").click()
+
+    def verify_added_to_cart_popup(self, go_to_cart = False):
+        expect(self.added_to_cart_modal_header).to_have_text("Added!")
+        expect(self.added_to_cart_modal_body).to_have_text("Your product has been added to cart.")
+        expect(self.added_to_cart_modal_view_cart).to_be_visible()
+        expect(self.added_to_cart_modal_continue_button).to_be_visible()
+
+        if go_to_cart == True:
+            self.added_to_cart_modal_view_cart.click()
+
+
+        else:
+            self.added_to_cart_modal_continue_button.click()
+
+
 
 
 

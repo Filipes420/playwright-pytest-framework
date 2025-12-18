@@ -4,6 +4,9 @@ import random
 
 fake = Faker()
 
+def get_random_email():
+    return fake.email()
+
 def create_contact_form_data():
     return {
         "name": fake.name(),
@@ -16,8 +19,7 @@ def get_random_product():
     products = []
 
     with open("data/products_data.csv", "r", newline="", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        next(reader)
+        reader = csv.DictReader(f)
 
         for row in reader:
             products.append(row)
@@ -38,6 +40,10 @@ def get_random_product_word():
     random_product = random_product[0]
     words = random_product.split(" ")
     return random.choice(words)
+
+def get_random_cipher_integer():
+    return random.randrange(1,9)
+
 
 
 
