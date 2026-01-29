@@ -1,5 +1,8 @@
 from playwright.sync_api import Page, expect
 from utils.text_utils import clean_text
+from data.data_generator import get_random_product
+
+
 import csv
 
 class ProductsPage():
@@ -15,6 +18,7 @@ class ProductsPage():
         self.added_to_cart_modal_body = page.locator(".modal-content p").filter(has_text="Your product has been added to cart.")
         self.added_to_cart_modal_view_cart = page.locator(".modal-content a")
         self.added_to_cart_modal_continue_button = page.locator(".modal-content button")
+        self.cart_button = page.get_by_role("link", name=" Cart")
 
     def get_products_header(self):
         return self.all_products_heading.inner_text()
@@ -57,6 +61,9 @@ class ProductsPage():
     def click_view_product(self):
         self.view_product_button.click()
 
+    def click_cart_button(self):
+        self.cart_button.click()
+
     def search_product(self, product_to_search):
         self.search_product_field.fill(product_to_search)
         self.search_button.click()
@@ -76,9 +83,10 @@ class ProductsPage():
 
             assert product_name in product.locator("p").inner_text()
 
-    def add_to_cart(self):
+    def add_product_to_cart(self):
         product = self.products
         product.locator("a").click()
+
 
     def verify_added_to_cart_popup(self, go_to_cart = False):
         expect(self.added_to_cart_modal_header).to_have_text("Added!")
@@ -89,11 +97,34 @@ class ProductsPage():
         if go_to_cart == True:
             self.added_to_cart_modal_view_cart.click()
 
-
         else:
             self.added_to_cart_modal_continue_button.click()
 
+    #wrapper function to add multiple product to cart at once
+    def add_multiple_products_to_cart(self, product_count):
 
+        ## list of product names
+        products_by_name = {}
+
+        ## iterate based on product_count
+        for i in range(product_count):
+            product = get_random_product()
+            name = product["name"]
+
+            self.search_product(name)
+            self.verify_searched_products(name)
+
+            if name in products_by_name:
+                products_by_name[name]["quantity"] = str(int(products_by_name[name]["quantity"]) + 1)
+            else:
+                product["quantity"] = "1"
+                products_by_name[name] = product
+
+            self.add_product_to_cart()
+
+            self.verify_added_to_cart_popup(i == product_count - 1)
+
+        return list(products_by_name.values())
 
 
 

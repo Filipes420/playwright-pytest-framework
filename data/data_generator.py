@@ -44,6 +44,14 @@ def get_random_product_word():
 def get_random_cipher_integer():
     return random.randrange(1,9)
 
+def create_card_information():
+    card_number = fake.credit_card_number(card_type=None)
+    expiry_date = fake.credit_card_expire(start="+1y", end="+5y")
+    cvv = fake.credit_card_security_code()
+
+    return {"card_number": card_number,
+            "expiry_date": expiry_date,
+            "cvv": cvv}
 
 
 

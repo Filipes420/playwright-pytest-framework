@@ -1,4 +1,3 @@
-import pytest
 from pages.main_page import MainPage
 from pages.products_page import ProductsPage
 from pages.cart_page import CartPage
@@ -23,13 +22,13 @@ def test_add_to_cart_without_quantity(empty_cart):
     # verify product 1 and add to cart
     products_page.search_product(product1["name"])
     products_page.verify_searched_products(product1["name"], product1["price"])
-    products_page.add_to_cart()
+    products_page.add_product_to_cart()
     products_page.verify_added_to_cart_popup()
 
     # verify product 2, add to cart go to cart
     products_page.search_product(product2["name"])
     products_page.verify_searched_products(product2["name"], product2["price"])
-    products_page.add_to_cart()
+    products_page.add_product_to_cart()
     products_page.verify_added_to_cart_popup(True)
 
     ## create list of products
@@ -83,5 +82,6 @@ def test_add_to_cart_with_quantity(empty_cart):
     product_page.click_add_to_cart_button()
     product_page.verify_added_to_cart_popup(True)
 
-
-
+    products = [product1, product2]
+    cart_page.verify_cart(products)
+    cart_page.delete_all_cart_products()

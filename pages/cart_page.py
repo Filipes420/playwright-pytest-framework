@@ -12,6 +12,7 @@ class CartPage():
         self.cart_table_header = page.locator("thead > tr")
         self.cart_table_products = page.locator("tbody > tr")
         self.home_button = page.get_by_role("link", name=" Home")
+        self.proceed_button = page.locator("#do_action .btn-default")
 
     def subscribe_to_newsletter(self, email):
         self.subscribe_email_field.fill(email)
@@ -33,7 +34,6 @@ class CartPage():
         column_count = self.get_cart_column_count()
         assert column_count == 6
 
-        print(column_count)
 
         for i in range(column_count):
             header_column_label = self.cart_table_header.locator("td").nth(i).inner_text().strip()
@@ -77,6 +77,10 @@ class CartPage():
 
     def click_home_button(self):
         self.home_button.click()
+
+    def click_proceed_button(self):
+        self.proceed_button.click()
+
 
 
 
