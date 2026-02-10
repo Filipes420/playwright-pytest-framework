@@ -1,4 +1,5 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
+import os
 
 class BasePage:
     def __init__(self, page: Page):
@@ -34,6 +35,17 @@ class BasePage:
 
     def get_title(self):
         return self.page.title()
+
+    def download_file(self, trigger_action):
+        with self.page.expect_download() as download_info:
+            trigger_action()
+
+        download = download_info.value
+
+        assert download.suggested_filename.endswith(".txt")
+
+        download.save_as("downloads/invoice.txt")
+        assert os.path.exists("downloads/invoice.txt")
 
 
 

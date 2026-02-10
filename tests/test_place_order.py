@@ -47,6 +47,11 @@ def test_place_order(empty_cart):
     ##place order
     payment_page.submit_order()
 
+    #download invoice
+    payment_page.download_order_invoice()
+
+
+
 
 
 

@@ -8,7 +8,6 @@ import csv
 class ProductsPage():
     def __init__(self, page: Page):
         self.page = page
-        self.all_products_heading = page.get_by_role("heading", name="All Products")
         self.products = page.locator(".features_items .productinfo")
         self.view_product_button = page.locator(".features_items .choose li > a").first
         self.search_product_field = page.locator("#advertisement #search_product")
@@ -21,7 +20,7 @@ class ProductsPage():
         self.cart_button = page.get_by_role("link", name=" Cart")
 
     def get_products_header(self):
-        return self.all_products_heading.inner_text()
+        return self.page.locator(".features_items > h2").inner_text().strip().lower()
 
     def get_products_count(self):
         return self.products.count()
@@ -82,6 +81,17 @@ class ProductsPage():
                 assert product_price == product.locator("h2").inner_text()
 
             assert product_name in product.locator("p").inner_text()
+
+    def get_product_names(self):
+        product_names = []
+        count = self.get_products_count()
+
+        for i in range(count):
+            product = self.products.nth(i)
+            product_name = product.locator("p").inner_text().strip()
+            product_names.append(product_name)
+
+        return product_names
 
     def add_product_to_cart(self):
         product = self.products
