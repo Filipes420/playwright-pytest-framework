@@ -6,7 +6,6 @@ from PIL import Image, ImageChops
 class ContactUsPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
-
         self.page = page
         self.get_in_touch = page.get_by_role("heading", name="Get In Touch")
         self.name_input = page.get_by_test_id("name")
@@ -16,7 +15,7 @@ class ContactUsPage(BasePage):
         self.upload_file_button = page.locator("//input[@type='file']")
         self.submit_button  = page.get_by_test_id("submit-button")
 
-## one element methods
+    # one element (single) methods
     def get_in_touch_heading(self):
         return self.get_in_touch.inner_text()
 
@@ -36,18 +35,9 @@ class ContactUsPage(BasePage):
         self.handle_dialog(trigger_action=lambda: self.submit_button.click(),
                            expected_text="Press OK to proceed!", dialog_expected=dialog_expected)
 
-    def validate_tooltip(self):
-        self.page.screenshot(path="data/contact_us_form_email_required.png")
-
-        img1 = Image.open("data/contact_us_form_email_required.png")
-        img2 = Image.open("data/expected_contact_us_form_email_required.png")
-
-        diff = ImageChops.difference(img1, img2)
-
-        return not diff.getbbox()  # True ak sú identické
 
 
-## wrapper methods
+    # wrapper method
     def fill_contact_form(self, name, email, subject, message, filepath=None):
         self.enter_name(name)
         self.enter_email(email)

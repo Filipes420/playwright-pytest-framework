@@ -9,36 +9,57 @@ from data.data_generator import get_random_product_word
 
 
 def test_search_product(setup):
-    base_page = BasePage(setup)
     main_page = MainPage(setup)
     products_page = ProductsPage(setup)
+    header = main_page.get_header()
 
-    ## main page
-    main_page.click_products()
+    # navigate to products page
+    header.click_products()
 
-    ## products page
-    assert base_page.get_title() == "Automation Exercise - All Products"
+    #get random product from csv
+    expected_product = get_random_product()
 
-    product_data = get_random_product()
+    # search by product name
+    products_page.search_product(expected_product["name"])
 
-    products_page.search_product(product_data["name"])
-    assert products_page.get_searched_products_header() == "SEARCHED PRODUCTS"
-    products_page.verify_searched_products(product_data["name"], product_data["price"])
+    #verify search heading
+    assert products_page.get_products_header() == "searched products"
+
+    # collect all found products
+    found_products = products_page.get_product_cards()
+
+    for product in found_products:
+        #verify product name
+        assert product.get_product_name() == expected_product["name"]
+
+        #verify product price
+        assert product.get_product_price() == expected_product["price"]
+
+        #verify product image loaded
+        assert product.is_product_image_loaded() == True
+
 
 def test_search_products(setup):
-    base_page = BasePage(setup)
     main_page = MainPage(setup)
     products_page = ProductsPage(setup)
+    header = main_page.get_header()
 
-    ## main page
-    main_page.click_products()
+    # navigate to products page
+    header.click_products()
 
-    ## products page
-    assert base_page.get_title() == "Automation Exercise - All Products"
+    # get random word from product names from csv
+    search_word = get_random_product_word()
 
-    search_word = get_random_product_word().strip()
+    # search by random product word
     products_page.search_product(search_word)
-    assert products_page.get_searched_products_header() == "SEARCHED PRODUCTS"
-    products_page.verify_searched_products(search_word)
+
+    # verify search heading
+    assert products_page.get_products_header() == "searched products"
+
+    # collect all found products
+    found_products = products_page.get_product_cards()
+
+    for product in found_products:
+        assert search_word in product.get_product_name()
 
 

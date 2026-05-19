@@ -22,6 +22,7 @@ def get_random_product():
         reader = csv.DictReader(f)
 
         for row in reader:
+            row["price"] = row["price"].replace("Rs. ", "").strip()
             products.append(row)
 
     return random.choice(products)

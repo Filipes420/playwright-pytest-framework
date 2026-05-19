@@ -1,14 +1,12 @@
-
-
 from conftest import setup
 from pages.main_page import MainPage
 
 
 def test_logout(setup):
 
-    # vytvaram objekt main page
+    # classes
     main_page = MainPage(setup)
 
-    # klikni logout
+    header = main_page.get_header()
 
-    main_page.click_logout()
+    header.click_logout()

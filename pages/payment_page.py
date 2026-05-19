@@ -16,7 +16,6 @@ class PaymentPage(BasePage):
         self.download_invoice_button = page.get_by_role("link", name="Download Invoice")
 
 
-
     def fill_out_card_details_form(self):
         card_details = create_card_information()
         self.name_on_card_field.fill("Filip Gonda")

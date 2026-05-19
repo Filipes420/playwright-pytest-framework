@@ -3,6 +3,7 @@ from pages.main_page import MainPage
 from pages.cart_page import CartPage
 from pages.signin_register_page import SignInRegisterPage
 from playwright.sync_api import sync_playwright
+from components.header import HeaderComponent
 
 @pytest.fixture(scope="function")
 def setup():
@@ -15,7 +16,9 @@ def setup():
 
     main_page = MainPage(page)
     main_page.start()
-    main_page.click_login()
+
+    header = main_page.get_header()
+    header.click_login()
 
     login_page = SignInRegisterPage(page)
 
@@ -40,9 +43,11 @@ def empty_cart():
 
     main_page = MainPage(page)
     cart_page = CartPage(page)
+    header = main_page.get_header()
+
 
     main_page.start()
-    main_page.click_login()
+    header.click_login()
 
     login_page = SignInRegisterPage(page)
 
@@ -52,10 +57,11 @@ def empty_cart():
     login_page.enter_password("Test123")
     login_page.click_login_button()
 
-    main_page.click_cart()
+    header.click_cart()
 
-    cart_page.delete_all_cart_products()
-    cart_page.click_home_button()
+    cart = cart_page.get_cart()
+    cart.delete_cart_products()
+    header.click_home()
 
     yield page
     browser.close()

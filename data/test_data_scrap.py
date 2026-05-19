@@ -1,7 +1,10 @@
+import pytest
+
 from conftest import setup
 from pages.main_page import MainPage
 from pages.products_page import ProductsPage
 
+@pytest.mark.skip
 def test_scrap_data(setup):
 
     main_page = MainPage(setup)

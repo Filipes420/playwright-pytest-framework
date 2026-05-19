@@ -8,12 +8,12 @@ from pages.main_page import MainPage
 
 def test_contact_us_form(setup):
 
-    ## vytvaram triedu main page
+    # classses
     main_page = MainPage(setup)
-    main_page.click_contact_us()
-
-    ## vytvaram triedu contact us page
     contact_us_page = ContactUsPage(setup)
+
+    header = main_page.get_header()
+    header.click_contact_us()
 
     assert contact_us_page.get_in_touch_heading() == "GET IN TOUCH"
 
@@ -26,12 +26,12 @@ def test_contact_us_form(setup):
 
 def test_contact_us_form_with_file(setup):
 
-    ## vytvaram triedu main page
+    # classes
     main_page = MainPage(setup)
-    main_page.click_contact_us()
-
-    ## vytvaram triedu contact us page
     contact_us_page = ContactUsPage(setup)
+
+    header = main_page.get_header()
+    header.click_contact_us()
 
     assert contact_us_page.get_in_touch_heading() == "GET IN TOUCH"
 
